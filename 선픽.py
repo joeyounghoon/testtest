@@ -194,4 +194,4 @@ for i in range(len(champions_ad)):
         champion_ad = champions_ad[i]
         with st.expander(label=champion_ad["name"], expanded=True):
             st.image(champion_ad["image_url"])
-            st.subheader(champion_ad["name"])
+            st.markdown(''':black[champion_ad["name"]]''')
