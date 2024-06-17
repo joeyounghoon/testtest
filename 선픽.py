@@ -188,10 +188,9 @@ champions_ad=[{
 },              
 ]
 
-cols = st.columns(14)
+cols = st.columns(5)
 for i in range(len(champions_ad)):
     with cols[i % 5]:
         champion_ad = champions_ad[i]
         with st.expander(label=champion_ad["name"], expanded=True):
-            st.image(champion_ad["image_url"])
-            st.write(champion_ad["name"])
+            st.image(champion_ad["image_url"], use_column_width=True, caption=champion_ad["name"], output_format="auto", width=160, height=160, style={"border-radius": "50%"})
