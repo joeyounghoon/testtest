@@ -194,3 +194,4 @@ for i in range(14):
         champion_ad = champions_ad[i]
         with st.expander(label=champion_ad["name"], expanded=True):
             st.image(champion_ad["image_url"])
+            st.write(champion_ad["name"])
