@@ -188,8 +188,8 @@ champions_ad=[{
 },              
 ]
 
-cols = st.columns(3)
-for i in range(3):
+cols = st.columns(14)
+for i in range(14):
     with cols[i]:
         champion_ad = champions_ad[i]
         with st.expander(label=champion_ad["name"], expanded=True):
