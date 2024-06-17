@@ -202,4 +202,4 @@ with st.container():
     for i in range(len(champions_ad)):
         with cols[i % 5]:
             champion_ad = champions_ad[i]
-            st.image(champion_ad["image_url"], caption=champion_ad["name"], use_column_width='always', output_format='auto')
+            st.image(champion_ad["image_url"], caption=champion_ad["name"])
