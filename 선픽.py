@@ -188,9 +188,9 @@ champions_ad=[{
 },              
 ]
 
-col1,col2,col3= st.colums(3)
-
-with col1:
-    champion_ad=champions_ad[0]
-    with st.expander(label=champions_ad["name"], expanded = True):
-        st.image(champion_ad["image_url"])
+cols=st.columns(3)
+for i in range(3):
+    with cols[i]:
+        champion_ad=champions_ad[i]
+        with st.expander(label=champions_ad["name"], expanded = True):
+            st.image(champion_ad["image_url"])
