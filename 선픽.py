@@ -464,29 +464,26 @@ with col1:
             st.error("Counter information not found.")
 
 with col2:
-    st.subheader("Champions - Support")
     with st.container():
-        clicked_sup = click_detector(html_sup)
-        st.write(clicked_sup)
+        #placeholder = st.empty()
+        st.write(clicked)
         # call openai
-        result_sup = call_example(clicked_sup)
-        st.write(result_sup)
-        # 팀 구성원 표시
+        result = call_example(clicked)
+        st.write(result)
+        # call openai
         st.subheader("Team")
-        try:
-            for item in result_sup['team']:
-                for champ in champions_sup:
-                    if champ["name"] == item:
-                        st.image(champ['image_url'])
-        except KeyError:
-            st.error("Team information not found.")
-
-        # 카운터 표시
+        for item in result['team']:
+            for i in champions_ad:
+                if i["name"] == item:
+                    st.image(i['image_url'])
+            for i in champions_sup:
+                if i["name"] == item:
+                    st.image(i['image_url'])
         st.subheader("Counter")
-        try:
-            for item in result_sup['counter']:
-                for champ in champions_sup:
-                    if champ["name"] == item:
-                        st.image(champ['image_url'])
-        except KeyError:
-            st.error("Counter information not found.")
+        for item in result['counter']:
+            for i in champions_ad:
+                if i["name"] == item:
+                    st.image(i['image_url'])
+            for i in champions_sup:
+                if i["name"] == item:
+                    st.image(i['image_url'])
