@@ -228,9 +228,9 @@ with col1:
         clicked = click_detector(html)
         cols = st.columns(6)
         for i in range(len(champions_ad)):
-        #    with cols[i % 6]:
-        #        champion_ad = champions_ad[i]
-        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
+            with cols[i % 6]:
+                champion_ad = champions_ad[i]
+                st.image(champion_ad["image_url"], caption=champion_ad["name"])
 with col2:
     with st.container():
         #placeholder = st.empty()
