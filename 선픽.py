@@ -1,4 +1,5 @@
 import streamlit as st
+from st_click_detector import click_detector
 
 # Streamlit 페이지 구성
 st.set_page_config(layout="wide")
@@ -335,19 +336,31 @@ champions_sup=[{
               
 ]
 
+
+html = ""
+for item in champions_ad:
+    name=item["name"]
+    src = item["image_url"]
+    html += f"<a href='#' id='{name}'><img src='{src}'></a>"
+
+
+
 # 중앙 정렬을 위한 컨테이너
 col1, col2 = st.columns(2)
-with col2:
-    with st.container():
-        placeholder = st.empty()
-        
+clicked=None
+
 with col1:
     with st.container():
-        cols = st.columns(6)
-        for i in range(len(champions_ad)):
-            with cols[i % 6]:
-                champion_ad = champions_ad[i]
-                st.image(champion_ad["image_url"], caption=champion_ad["name"])
+        clicked = click_detector(html)
+        #cols = st.columns(6)
+        #for i in range(len(champions_ad)):
+        #    with cols[i % 6]:
+        #        champion_ad = champions_ad[i]
+        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
+with col2:
+    with st.container():
+        #placeholder = st.empty()
+        st.write(clicked)
 
 
 st.divider()
