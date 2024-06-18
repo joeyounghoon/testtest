@@ -205,6 +205,8 @@ champions_sup=[{
               
 ]
 
+def call_example(query):
+    return {"team":["시비","닐라","직스"],"counter":["트위치","트리스타나","코르키"]}
 
 html = ""
 for item in champions_ad:
@@ -230,6 +232,8 @@ with col2:
     with st.container():
         #placeholder = st.empty()
         st.write(clicked)
+        result = call_example(clicked)
+        st.write(result)
         # call openai
 
 st.divider()
