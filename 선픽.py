@@ -250,3 +250,10 @@ with col2:
                     st.image(i['image_url'])
 
 st.divider()
+
+with st.container():
+    cols = st.columns(6)
+    for i in range(len(champions_sup)):
+        with cols[i % 6]:
+            champion_sup = champions_sup[i]
+            st.image(champion_sup["image_url"], caption=champion_sup["name"])
