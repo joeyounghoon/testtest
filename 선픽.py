@@ -336,13 +336,18 @@ champions_sup=[{
 ]
 
 # 중앙 정렬을 위한 컨테이너
-with st.container():
-    cols = st.columns(6)
-    for i in range(len(champions_ad)):
-        with cols[i % 6]:
-            champion_ad = champions_ad[i]
-            st.image(champion_ad["image_url"], caption=champion_ad["name"])
-            
+col1, col2 = st.columns(2)
+with col1:
+    with st.container():
+        cols = st.columns(6)
+        for i in range(len(champions_ad)):
+            with cols[i % 6]:
+                champion_ad = champions_ad[i]
+                st.image(champion_ad["image_url"], caption=champion_ad["name"])
+with col2:
+    with st.container():
+        st.write("test")
+
 st.divider()
 
 with st.container():
