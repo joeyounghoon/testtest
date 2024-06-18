@@ -436,7 +436,7 @@ for item in champions_sup:
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("Champions - Attack Damage")
+    st.subheader("원딜 챔피언")
     with st.container():
         clicked_ad = click_detector(html_ad)
         st.write(clicked_ad)
@@ -454,7 +454,7 @@ with col1:
             st.error("Team information not found.")
 
         # 카운터 표시
-        st.subheader("Counter")
+        st.subheader("카운터")
         try:
             for item in result_ad['counter']:
                 for champ in champions_ad:
@@ -464,26 +464,29 @@ with col1:
             st.error("Counter information not found.")
 
 with col2:
+    st.subheader("서폿 챔피언")
     with st.container():
-        #placeholder = st.empty()
-        st.write(clicked)
+        clicked_sup = click_detector(html_sup)
+        st.write(clicked_sup)
         # call openai
-        result = call_example(clicked)
-        st.write(result)
-        # call openai
+        result_sup = call_example(clicked_sup)
+        st.write(result_sup)
+        # 팀 구성원 표시
         st.subheader("Team")
-        for item in result['team']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
-            for i in champions_sup:
-                if i["name"] == item:
-                    st.image(i['image_url'])
-        st.subheader("Counter")
-        for item in result['counter']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
-            for i in champions_sup:
-                if i["name"] == item:
-                    st.image(i['image_url'])
+        try:
+            for item in result_sup['team']:
+                for champ in champions_sup:
+                    if champ["name"] == item:
+                        st.image(champ['image_url'])
+        except KeyError:
+            st.error("Team information not found.")
+
+        # 카운터 표시
+        st.subheader("카운터")
+        try:
+            for item in result_sup['counter']:
+                for champ in champions_sup:
+                    if champ["name"] == item:
+                        st.image(champ['image_url'])
+        except KeyError:
+            st.error("Counter information not found.")
