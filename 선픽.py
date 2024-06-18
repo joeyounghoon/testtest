@@ -433,10 +433,10 @@ for item in champions_sup:
     html_sup += f"<a href='#' id='{name}'><img src='{src}'></a>"
 
 # 중앙 정렬을 위한 컨테이너
-col1, col2 = st.columns(2)
+col1, col2 = st.columns(1)
 
 with col1:
-    st.subheader("Champions - Attack Damage")
+    st.subheader("원딜 챔피언")
     with st.container():
         clicked_ad = click_detector(html_ad)
         st.write(clicked_ad)
@@ -457,7 +457,7 @@ with col1:
                     st.image(champ['image_url'])
 
 with col2:
-    st.subheader("Champions - Support")
+    st.subheader("서폿 챔피언")
     with st.container():
         clicked_sup = click_detector(html_sup)
         st.write(clicked_sup)
@@ -476,3 +476,4 @@ with col2:
             for champ in champions_sup:
                 if champ["name"] == item:
                     st.image(champ['image_url'])
+
