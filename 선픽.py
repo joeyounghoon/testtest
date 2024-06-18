@@ -205,32 +205,25 @@ champions_sup=[{
               
 ]
 
+
 def call_example(query):
     return {"team":["시비","닐라","직스"],"counter":["트위치","트리스타나","코르키"]}
-
 html = ""
 for item in champions_ad:
     name=item["name"]
     src = item["image_url"]
     html += f"<a href='#' id='{name}'><img src='{src}'></a>"
-
-for sup in champions_sup:
-    name=item["name"]
-    src = item["image_url"]
-    html += f"<a href='#' id='{name}'><img src='{src}'></a>"
-
 # 중앙 정렬을 위한 컨테이너
 col1, col2 = st.columns(2)
 clicked=None
-
 with col1:
     with st.container():
         clicked = click_detector(html)
-        cols = st.columns(6)
-        for i in range(len(champions_ad)):
-            with cols[i % 6]:
-                champion_ad = champions_ad[i]
-                st.image(champion_ad["image_url"], caption=champion_ad["name"])
+        #cols = st.columns(6)
+        #for i in range(len(champions_ad)):
+        #    with cols[i % 6]:
+        #        champion_ad = champions_ad[i]
+        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
 with col2:
     with st.container():
         #placeholder = st.empty()
@@ -238,6 +231,7 @@ with col2:
         # call openai
         result = call_example(clicked)
         st.write(result)
+        # call openai
         st.subheader("Team")
         for item in result['team']:
             for i in champions_ad:
