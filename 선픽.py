@@ -420,75 +420,59 @@ def call_example(query):
     }
     return examples.get(query, {"team": [], "counter": []})
 
-html = ""
+html_ad = ""
 for item in champions_ad:
-    name=item["name"]
+    name = item["name"]
     src = item["image_url"]
-    html += f"<a href='#' id='{name}'><img src='{src}'></a>"
+    html_ad += f"<a href='#' id='{name}'><img src='{src}'></a>"
 
-html1 = ""
+html_sup = ""
 for item in champions_sup:
-    name=item["name"]
+    name = item["name"]
     src = item["image_url"]
-    html += f"<a href='#' id='{name}'><img src='{src}'></a>"
-    
+    html_sup += f"<a href='#' id='{name}'><img src='{src}'></a>"
+
 # 중앙 정렬을 위한 컨테이너
 col1, col2 = st.columns(2)
-clicked=None
-with col1:
-    with st.container():
-        clicked = click_detector(html)
-        #cols = st.columns(6)
-        #for i in range(len(champions_ad)):
-        #    with cols[i % 6]:
-        #        champion_ad = champions_ad[i]
-        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
-with col2:
-    with st.container():
-        #placeholder = st.empty()
-        st.write(clicked)
-        # call openai
-        result = call_example(clicked)
-        st.write(result)
-        # call openai
-        st.subheader("Team")
-        for item in result['team']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
-        st.subheader("Counter")
-        for item in result['counter']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
 
-st.divider()
-
-col1, col2 = st.columns(2)
-clicked=None
 with col1:
+    st.subheader("Champions - Attack Damage")
     with st.container():
-        clicked = click_detector(html1)
-        #cols = st.columns(6)
-        #for i in range(len(champions_ad)):
-        #    with cols[i % 6]:
-        #        champion_ad = champions_ad[i]
-        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
-with col2:
-    with st.container():
-        #placeholder = st.empty()
-        st.write(clicked)
+        clicked_ad = click_detector(html_ad)
+        st.write(clicked_ad)
         # call openai
-        result = call_example(clicked)
-        st.write(result)
-        # call openai
+        result_ad = call_example(clicked_ad)
+        st.write(result_ad)
+        # 팀 구성원 표시
         st.subheader("Team")
-        for item in result['team']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
+        for item in result_ad['team']:
+            for champ in champions_ad:
+                if champ["name"] == item:
+                    st.image(champ['image_url'])
+        # 카운터 표시
         st.subheader("Counter")
-        for item in result['counter']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
+        for item in result_ad['counter']:
+            for champ in champions_ad:
+                if champ["name"] == item:
+                    st.image(champ['image_url'])
+
+with col2:
+    st.subheader("Champions - Support")
+    with st.container():
+        clicked_sup = click_detector(html_sup)
+        st.write(clicked_sup)
+        # call openai
+        result_sup = call_example(clicked_sup)
+        st.write(result_sup)
+        # 팀 구성원 표시
+        st.subheader("Team")
+        for item in result_sup['team']:
+            for champ in champions_sup:
+                if champ["name"] == item:
+                    st.image(champ['image_url'])
+        # 카운터 표시
+        st.subheader("Counter")
+        for item in result_sup['counter']:
+            for champ in champions_sup:
+                if champ["name"] == item:
+                    st.image(champ['image_url'])
