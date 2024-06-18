@@ -433,7 +433,7 @@ for item in champions_sup:
     html_sup += f"<a href='#' id='{name}'><img src='{src}'></a>"
 
 # 중앙 정렬을 위한 컨테이너
-col1, col2 = st.columns(1)
+col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("원딜 챔피언")
