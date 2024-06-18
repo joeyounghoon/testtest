@@ -416,8 +416,8 @@ def call_example(query):
     },
     "탐켄치": {
         "counter": ["블리츠크랭크", "렐", "파이크"]
+        }
     }
-}
     return examples.get(query, {"team": [], "counter": []})
 
 html = ""
