@@ -1,5 +1,8 @@
 import streamlit as st
 from st_click_detector import click_detector
+import os
+from dotenv import load_dotenv
+
 # Streamlit 페이지 구성
 st.set_page_config(layout="wide")
 # 사이드바에 들어가는 타이틀
@@ -238,6 +241,23 @@ def call_example(query):
     }
     return examples.get(query, {"team": [], "counter": []})
 
+def call_openai(query, team, counter):
+    team_str = ", ".join(team)
+    counter_str = ", ".join(counter)
+    prompt = f"챔피언 {query}의 팀 목록: {team_str}, 카운터 목록: {counter_str}. 이 정보를 사용하여 더 나은 전략을 세울 수 있는 팁을 제공해 주세요."
+    
+    try:
+        response = openai.Completion.create(
+            engine="gpt-4o",
+            prompt=prompt,
+            max_tokens=400,  # 필요에 따라 토큰 수를 조절하세요.
+            n=1,
+            stop=None,
+            temperature=0.7
+        )
+        return response.choices[0].text.strip()
+    except Exception as e:
+        return str(e)
 
 html_ad = ""
 for item in champions_ad:
@@ -252,23 +272,15 @@ for item in champions_sup:
     
 # 중앙 정렬을 위한 컨테이너
 col1, col2 = st.columns(2)
-clicked=None
+
+clicked = None
 with col1:
     with st.container():
         clicked = click_detector(html_ad)
-        #cols = st.columns(3)
-        #for i in range(len(champions_ad)):
-        #    with cols[i % 3]:
-        #        champion_ad = champions_ad[i]
-        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
 with col2:
     with st.container():
-        #placeholder = st.empty()
         st.write(clicked)
-        # call openai
         result = call_example(clicked)
-        #st.write(result)
-        # call openai
         st.subheader("Team")
         for item in result['team']:
             for i in champions_ad:
@@ -286,26 +298,28 @@ with col2:
                 if i["name"] == item:
                     st.image(i['image_url'])
 
+        # OpenAI API 호출
+        tips = call_openai(clicked, result['team'], result['counter'])
+        st.write(tips)
+
 st.divider()
 col1, col2 = st.columns(2)
-clicked=None
+clicked = None
 with col1:
     with st.container():
         clicked = click_detector(html_sup)
-        #cols = st.columns(3)
-        #for i in range(len(champions_sup)):
-         #   with cols[i % 3]:
-          #      champion_sup = champions_sup[i]
-           #     st.image(champion_sup["image_url"], caption=champion_sup["name"])
 with col2:
     with st.container():
-        #placeholder = st.empty()
         st.write(clicked)
-        # call openai
         result = call_example(clicked)
-        #st.write(result)
-        # call openai
-
+        st.subheader("Team")
+        for item in result['team']:
+            for i in champions_ad:
+                if i["name"] == item:
+                    st.image(i['image_url'])
+            for i in champions_sup:
+                if i["name"] == item:
+                    st.image(i['image_url'])
         st.subheader("Counter")
         for item in result['counter']:
             for i in champions_ad:
@@ -314,3 +328,7 @@ with col2:
             for i in champions_sup:
                 if i["name"] == item:
                     st.image(i['image_url'])
+
+        # OpenAI API 호출
+        tips = call_openai(clicked, result['team'], result['counter'])
+        st.write(tips)
