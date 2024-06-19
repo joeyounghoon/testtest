@@ -2,6 +2,7 @@ import streamlit as st
 from bs4 import BeautifulSoup
 import requests
 from openai import OpenAI
+from st_click_detector import click_detector
 
 # Streamlit 페이지 구성
 st.set_page_config(layout="wide")
