@@ -256,11 +256,11 @@ clicked=None
 with col1:
     with st.container():
         clicked = click_detector(html_ad)
-        #cols = st.columns(6)
-        #for i in range(len(champions_ad)):
-        #    with cols[i % 6]:
-        #        champion_ad = champions_ad[i]
-        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
+        cols = st.columns(3)
+        for i in range(len(champions_ad)):
+            with cols[i % 3]:
+                champion_ad = champions_ad[i]
+                st.image(champion_ad["image_url"], caption=champion_ad["name"])
 with col2:
     with st.container():
         #placeholder = st.empty()
@@ -291,11 +291,11 @@ clicked=None
 with col1:
     with st.container():
         clicked = click_detector(html_sup)
-        #cols = st.columns(6)
-        #for i in range(len(champions_ad)):
-        #    with cols[i % 6]:
-        #        champion_ad = champions_ad[i]
-        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
+        cols = st.columns(3)
+        for i in range(len(champions_ad)):
+            with cols[i % 3]:
+                champion_ad = champions_ad[i]
+                st.image(champion_ad["image_url"], caption=champion_ad["name"])
 with col2:
     with st.container():
         #placeholder = st.empty()
