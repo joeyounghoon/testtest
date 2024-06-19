@@ -639,7 +639,7 @@ with col2:
 
 st.divider()
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([1, 5])
 clicked=None
 with col1:
     with st.container():
