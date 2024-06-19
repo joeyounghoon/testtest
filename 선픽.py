@@ -602,7 +602,7 @@ for item in champions_sup:
 
 
 # 중앙 정렬을 위한 컨테이너
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([1, 5])
 clicked=None
 with col1:
     with st.container():
