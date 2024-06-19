@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 from openai import OpenAI
 from st_click_detector import click_detector
+import json
 
 # Streamlit 페이지 구성
 st.set_page_config(layout="wide")
@@ -10,6 +11,8 @@ st.set_page_config(layout="wide")
 st.sidebar.title('OptimalBotAI')
 
 api_key = st.text_input('Enter your OpenAI API key:', type='password')
+
+openai.api_key = 'your-api-key'
 
 def download_and_save(url, filename):
     """
@@ -586,59 +589,85 @@ def call_example(query):
     }
     return examples.get(query, {"team": [], "counter": []})
 
+# Function to get OpenAI API key from user input
+def get_api_key():
+    api_key = st.text_input("Enter your OpenAI API key:", type="password")
+    return api_key
 
+# Function to call OpenAI API with user input
+def response(user_input, api_key):
+    openai.api_key = api_key
+    response = openai.ChatCompletion.create(
+        model="text-davinci-0040",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": f"{user_input}의 상성과 조합에 대해 설명해주세요."}
+        ]
+    )
+    
+    # Extract and return the assistant's reply from the response
+    reply = response['choices'][0]['message']['content']
+    return reply
 
+# Generating HTML for champions
 html_ad = ""
 for item in champions_ad:
-    name=item["name"]
+    name = item["name"]
     src = item["image_url"]
     html_ad += f"<a href='#' id='{name}'><img src='{src}'></a>"
 
 html_sup = ""
 for item in champions_sup:
-    name=item["name"]
+    name = item["name"]
     src = item["image_url"]
     html_sup += f"<a href='#' id='{name}'><img src='{src}'></a>"
-    
 
+# Streamlit UI
+st.title("Champion Assistant")
 
+# Get OpenAI API key from user input
+api_key = get_api_key()
 
-# 중앙 정렬을 위한 컨테이너
-col1, col2 = st.columns([1, 5])
-clicked=None
-with col1:
-    with st.container():
-        clicked = click_detector(html_ad)
-        #cols = st.columns(6)
-        #for i in range(len(champions_ad)):
-        #    with cols[i % 6]:
-        #        champion_ad = champions_ad[i]
-        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
-with col2:
-    with st.container():
-        #placeholder = st.empty()
-        st.write(clicked)
-        # call openai
-        result = call_example(clicked)
-        st.write(result)
-        st.subheader("Team")
-    
-        for item in result['team']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
-            for i in champions_sup:
-                if i["name"] == item:
-                    st.image(i['image_url'])
+if api_key:
+    col1, col2 = st.columns([1, 5])
+    clicked = None
 
-        st.subheader("Counter")
-        for item in result['counter']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
-            for i in champions_sup:
-                if i["name"] == item:
-                    st.image(i['image_url'])
+    with col1:
+        with st.container():
+            clicked = click_detector(html_ad + html_sup, key="champion_clicks")
+
+    with col2:
+        with st.container():
+            if clicked:  # Only call the response function if a champion is clicked
+                # Call OpenAI API with the clicked champion name
+                result = response(clicked, api_key)
+                st.write(result)
+                
+                # Assume the result is a JSON-like dict containing team and counter information
+                # Parse the result assuming it contains 'team' and 'counter' lists
+                # Adjust the parsing if the actual response format differs
+                result_dict = json.loads(result)
+                
+                st.subheader("Team")
+                for item in result_dict['team']:
+                    for i in champions_ad:
+                        if i["name"] == item:
+                            st.image(i['image_url'])
+                    for i in champions_sup:
+                        if i["name"] == item:
+                            st.image(i['image_url'])
+
+                st.subheader("Counter")
+                for item in result_dict['counter']:
+                    for i in champions_ad:
+                        if i["name"] == item:
+                            st.image(i['image_url'])
+                    for i in champions_sup:
+                        if i["name"] == item:
+                            st.image(i['image_url'])
+else:
+    st.warning("Please enter your OpenAI API key to use the Champion Assistant.")
+# 원딜 정렬을 위한 컨테이너
 
 st.divider()
 
