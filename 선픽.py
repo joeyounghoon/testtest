@@ -505,16 +505,25 @@ def get_api_key():
 
 # Function to call OpenAI API with user input
 def response(user_input):
-    response = client.chat.completions.create(
-      model="gpt-4o",
-      messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": f"{user_input}의 상성과 조합에 대해 설명해주세요"}
-      ]
-    )
-    return response
-    
+    # Get OpenAI API key from user input
+    api_key = get_api_key()
 
+    if api_key:
+        openai.api_key = api_key
+        response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": f"{user_input}의 상성과 조합에 대해 설명해주세요."}
+            ]
+        )
+        
+        # Extract and return the assistant's reply from the response
+        reply = response['choices'][0]['message']['content']
+        return reply
+    else:
+        return "Please enter your OpenAI API key to use the Champion Assistant."
+        
 html_ad = ""
 for item in champions_ad:
     name=item["name"]
