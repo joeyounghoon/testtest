@@ -507,7 +507,10 @@ with col2:
         result = call_example(clicked)
         #st.write(result)
         # call openai
-       
+
+        #서폿 조합 코드
+        #L_____
+        
         st.subheader("Counter")
         for item in result['counter']:
             for i in champions_ad:
