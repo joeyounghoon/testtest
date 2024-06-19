@@ -203,7 +203,7 @@ def call_example(query):
     examples={
         "징크스": {
             "counter": ["트위치", "애쉬", "드레이븐", "트리스타나", "칼리스타", "바루스", "아펠리오스"],
-            "team": ["쓰레쉬", "룰루", "밀리오", "브라움", "탐켄치"]
+            "team": ["쓰레쉬", "룰루",  "브라움"]
         },
         "진": {
             "counter": ["트위치","제리","칼리스타"],
@@ -412,18 +412,22 @@ with col2:
         for item in result['team']:
             for i in champions_ad:
                 if i["name"] == item:
-                    st.image(i['image_url'])
+                     with col1:
+                        st.image(i['image_url'])
             for i in champions_sup:
                 if i["name"] == item:
-                    st.image(i['image_url'])
+                     with col2:
+                        st.image(i['image_url'])
         st.subheader("Counter")
         for item in result['counter']:
             for i in champions_ad:
                 if i["name"] == item:
-                    st.image(i['image_url'])
+                     with col1:
+                        st.image(i['image_url'])
             for i in champions_sup:
                 if i["name"] == item:
-                    st.image(i['image_url'])
+                     with col2:
+                        st.image(i['image_url'])
 st.divider()
 col1, col2 = st.columns(2)
 clicked=None
@@ -448,7 +452,9 @@ with col2:
         for item in result['counter']:
             for i in champions_ad:
                 if i["name"] == item:
-                    st.image(i['image_url'])
+                    with col1:
+                        st.image(i['image_url'])
             for i in champions_sup:
                 if i["name"] == item:
-                    st.image(i['image_url'])
+                    with col2:
+                        st.image(i['image_url'])
