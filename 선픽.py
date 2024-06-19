@@ -1,6 +1,95 @@
 import streamlit as st
-from st_click_detector import click_detector
-import openai
+from bs4 import BeautifulSoup
+import requests
+from openai import OpenAI
+
+api_key = st.text_input('Enter your OpenAI API key:', type='password')
+
+def download_and_save(url, filename):
+    """
+    Function to download text content from a URL, parse it using BeautifulSoup,
+    and save it to a file.
+    """
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    text = soup.get_text(separator=' ', strip=True)
+    with open(filename, 'w') as fo:
+        fo.write(text)
+
+def setup_openai(api_key, filename):
+    """
+    Function to setup OpenAI client, create vector store, and create assistant.
+    """
+    client = OpenAI(api_key=api_key)
+
+    # Download data file from GitHub
+    github_url = "https://github.com/hyunnn24/retrieval/blob/main/data.txt"
+    url = github_url.replace("/blob/", "/raw/")
+    download_and_save(url, filename)
+
+    # Create vector store
+    vector_store = client.beta.vector_stores.create(name="Bottom pick")
+
+    # Create assistant
+    assistant = client.beta.assistants.create(
+        name="LOL Pick Assistant",
+        instructions="문서를 참조하여 주어지는 모든 챔피언들의 카운터와 추천서폿을 각각 알려주세요 한국어로 답해주세요",
+        model="gpt-3.5-turbo",
+        tools=[{"type": "file_search"}],
+        tool_resources={
+            "file_search": {
+                "vector_store_ids": [vector_store.id]
+            }
+        }
+    )
+
+    return client, vector_store, assistant
+
+def run_openai(client, assistant, user_input):
+    """
+    Function to run OpenAI assistant with user input.
+    """
+    thread = client.beta.threads.create(
+        messages=[
+            {
+                "role": "user",
+                "content": user_input,
+            }
+        ]
+    )
+
+    run = client.beta.threads.runs.create_and_poll(
+        thread_id=thread.id,
+        assistant_id=assistant.id
+    )
+
+    thread_messages = client.beta.threads.messages.list(thread.id, run_id=run.id)
+
+    return thread_messages
+
+# Streamlit application start
+#def main():
+#    st.title("간단한 챗봇 만들기")
+
+    # User input fields
+#    api_key = st.text_input('Enter your OpenAI API key:', type='password')
+#    user_input = st.text_input('픽 입력:')
+
+ #   if api_key and user_input:
+ #       try:
+            # Setup OpenAI client and resources
+ #           filename = 'data.txt'
+ #           client, vector_store, assistant = setup_openai(api_key, filename)
+
+            # Run OpenAI assistant with user input
+ #           thread_messages = run_openai(client, assistant, user_input)
+
+            # Display messages from the assistant
+#            for msg in thread_messages.data:
+#                st.write(f"{msg.role}: {msg.content[0].text.value}")
+
+#        except Exception as e:
+ #           st.error(f"Error occurred: {str(e)}")
 
 # Streamlit 페이지 구성
 st.set_page_config(layout="wide")
@@ -240,46 +329,41 @@ def call_example(query):
     }
     return examples.get(query, {"team": [], "counter": []})
 
-def call_openai(query, team, counter):
-    team_str = ", ".join(team)
-    counter_str = ", ".join(counter)
-    prompt = f"챔피언 {query}의 팀 목록: {team_str}, 카운터 목록: {counter_str}. 이 정보를 사용하여 더 나은 전략을 세울 수 있는 팁을 제공해 주세요."
-    
-    try:
-        response = openai.Completion.create(
-            engine="gpt-4o",
-            prompt=prompt,
-            max_tokens=400,  # 필요에 따라 토큰 수를 조절하세요.
-            n=1,
-            stop=None,
-            temperature=0.7
-        )
-        return response.choices[0].text.strip()
-    except Exception as e:
-        return str(e)
 
 html_ad = ""
 for item in champions_ad:
     name=item["name"]
     src = item["image_url"]
     html_ad += f"<a href='#' id='{name}'><img src='{src}'></a>"
+
 html_sup = ""
 for item in champions_sup:
     name=item["name"]
     src = item["image_url"]
     html_sup += f"<a href='#' id='{name}'><img src='{src}'></a>"
     
+
+
+
 # 중앙 정렬을 위한 컨테이너
 col1, col2 = st.columns(2)
-
-clicked = None
+clicked=None
 with col1:
     with st.container():
         clicked = click_detector(html_ad)
+        #cols = st.columns(6)
+        #for i in range(len(champions_ad)):
+        #    with cols[i % 6]:
+        #        champion_ad = champions_ad[i]
+        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
 with col2:
     with st.container():
+        #placeholder = st.empty()
         st.write(clicked)
+        # call openai
         result = call_example(clicked)
+        #st.write(result)
+        # call openai
         st.subheader("Team")
         for item in result['team']:
             for i in champions_ad:
@@ -297,28 +381,30 @@ with col2:
                 if i["name"] == item:
                     st.image(i['image_url'])
 
-        # OpenAI API 호출
-        tips = call_openai(clicked, result['team'], result['counter'])
-        st.write(tips)
-
 st.divider()
+
 col1, col2 = st.columns(2)
-clicked = None
+clicked=None
 with col1:
     with st.container():
         clicked = click_detector(html_sup)
+        #cols = st.columns(6)
+        #for i in range(len(champions_ad)):
+        #    with cols[i % 6]:
+        #        champion_ad = champions_ad[i]
+        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
 with col2:
     with st.container():
+        #placeholder = st.empty()
         st.write(clicked)
+        # call openai
         result = call_example(clicked)
-        st.subheader("Team")
-        for item in result['team']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
-            for i in champions_sup:
-                if i["name"] == item:
-                    st.image(i['image_url'])
+        #st.write(result)
+        # call openai
+
+        #서폿 조합 코드
+        #L_____
+        
         st.subheader("Counter")
         for item in result['counter']:
             for i in champions_ad:
@@ -327,7 +413,3 @@ with col2:
             for i in champions_sup:
                 if i["name"] == item:
                     st.image(i['image_url'])
-
-        # OpenAI API 호출
-        tips = call_openai(clicked, result['team'], result['counter'])
-        st.write(tips)
