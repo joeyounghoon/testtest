@@ -506,8 +506,8 @@ def get_api_key():
 # Function to call OpenAI API with user input
 def response(user_input, api_key):
     openai.api_key = api_key
-    response = openai.ChatCompletion.create(
-        model="text-davinci-0040",
+    response = client.chat.completions.create(
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": f"{user_input}의 상성과 조합에 대해 설명해주세요."}
@@ -547,6 +547,7 @@ with col2:
         # call openai
         result = call_example(clicked)
         st.write(result)
+        st.write(response(result, sk-proj-ZzTSiwAYcRFIfdZLD59RT3BlbkFJ2dV4nxdqkHBF7yuRLmc1))
         st.subheader("Team")
 
         for item in result['team']:
