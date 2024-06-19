@@ -12,8 +12,6 @@ st.sidebar.title('OptimalBotAI')
 
 api_key = st.text_input('Enter your OpenAI API key:', type='password')
 
-openai.api_key = 'your-api-key'
-
 def download_and_save(url, filename):
     """
     Function to download text content from a URL, parse it using BeautifulSoup,
