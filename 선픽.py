@@ -256,11 +256,11 @@ clicked=None
 with col1:
     with st.container():
         clicked = click_detector(html_ad)
-        cols = st.columns(3)
-        for i in range(len(champions_ad)):
-            with cols[i % 3]:
-                champion_ad = champions_ad[i]
-                st.image(champion_ad["image_url"], caption=champion_ad["name"])
+        #cols = st.columns(3)
+        #for i in range(len(champions_ad)):
+        #    with cols[i % 3]:
+        #        champion_ad = champions_ad[i]
+        #        st.image(champion_ad["image_url"], caption=champion_ad["name"])
 with col2:
     with st.container():
         #placeholder = st.empty()
@@ -285,31 +285,4 @@ with col2:
             for i in champions_sup:
                 if i["name"] == item:
                     st.image(i['image_url'])
-st.divider()
-col1, col2 = st.columns(2)
-clicked=None
-with col1:
-    with st.container():
-        clicked = click_detector(html_sup)
-        cols = st.columns(3)
-        for i in range(len(champions_ad)):
-            with cols[i % 3]:
-                champion_ad = champions_ad[i]
-                st.image(champion_ad["image_url"], caption=champion_ad["name"])
-with col2:
-    with st.container():
-        #placeholder = st.empty()
-        st.write(clicked)
-        # call openai
-        result = call_example(clicked)
-        #st.write(result)
-        # call openai
 
-        st.subheader("Counter")
-        for item in result['counter']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
-            for i in champions_sup:
-                if i["name"] == item:
-                    st.image(i['image_url'])
