@@ -1,5 +1,6 @@
 import streamlit as st
 from st_click_detector import click_detector
+import openai
 
 # Streamlit 페이지 구성
 st.set_page_config(layout="wide")
