@@ -22,7 +22,7 @@ def download_and_save(url, filename):
     with open(filename, 'w') as fo:
         fo.write(text)
 
-def setup_openai(api_key, filename):
+def setup_openai(api_key, filename, ad_name, sup_name, counter):
     """
     Function to setup OpenAI client, create vector store, and create assistant.
     """
@@ -39,7 +39,7 @@ def setup_openai(api_key, filename):
     # Create assistant
     assistant = client.beta.assistants.create(
         name="LOL Pick Assistant",
-        instructions="문서를 참조하여 주어지는 모든 챔피언들의 카운터와 추천서폿을 각각 알려주세요 한국어로 답해주세요",
+        instructions=f"문서를 참조하여 {ad_name}과 {sup_name}의 조합 전략을 알려주세요, 그리고{ad_name}의 {counter}를 알려주고 {ad_name}가 상대할 때 주의할 점을 알려주세요, 한국어로 답해주세요",
         model="gpt-3.5-turbo",
         tools=[{"type": "file_search"}],
         tool_resources={
@@ -621,12 +621,10 @@ with col2:
         # call openai
         result = call_example(clicked)
         #st.write(result)
-        run_openai(client, assistant, i[name])
+        #call openai
         st.subheader("Team")
+    
         for item in result['team']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
             for i in champions_sup:
                 if i["name"] == item:
                     st.image(i['image_url'])
