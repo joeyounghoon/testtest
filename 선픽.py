@@ -286,3 +286,31 @@ with col2:
                 if i["name"] == item:
                     st.image(i['image_url'])
 
+st.divider()
+col1, col2 = st.columns(2)
+clicked=None
+with col1:
+    with st.container():
+        clicked = click_detector(html_sup)
+        cols = st.columns(3)
+        for i in range(len(champions_sup)):
+            with cols[i % 3]:
+                champion_sup = champions_sup[i]
+                st.image(champion_sup["image_url"], caption=champion_sup["name"])
+with col2:
+    with st.container():
+        #placeholder = st.empty()
+        st.write(clicked)
+        # call openai
+        result = call_example(clicked)
+        #st.write(result)
+        # call openai
+
+        st.subheader("Counter")
+        for item in result['counter']:
+            for i in champions_ad:
+                if i["name"] == item:
+                    st.image(i['image_url'])
+            for i in champions_sup:
+                if i["name"] == item:
+                    st.image(i['image_url'])
