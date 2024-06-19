@@ -292,11 +292,11 @@ clicked=None
 with col1:
     with st.container():
         clicked = click_detector(html_sup)
-        cols = st.columns(3)
-        for i in range(len(champions_sup)):
-            with cols[i % 3]:
-                champion_sup = champions_sup[i]
-                st.image(champion_sup["image_url"], caption=champion_sup["name"])
+        #cols = st.columns(3)
+        #for i in range(len(champions_sup)):
+         #   with cols[i % 3]:
+          #      champion_sup = champions_sup[i]
+           #     st.image(champion_sup["image_url"], caption=champion_sup["name"])
 with col2:
     with st.container():
         #placeholder = st.empty()
