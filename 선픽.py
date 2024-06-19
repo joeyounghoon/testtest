@@ -621,7 +621,7 @@ with col2:
         # call openai
         result = call_example(clicked)
         #st.write(result)
-        # call openai
+        run_openai(client, assistant, i[name])
         st.subheader("Team")
         for item in result['team']:
             for i in champions_ad:
