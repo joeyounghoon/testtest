@@ -357,6 +357,7 @@ with col2:
                             {"role": "system", "content": "You are a helpful assistant."},
                             {"role": "user", "content": f"{user_input}의 상성과 조합에 관해 설명해 주세요."}
                         ]
+                    )
                     text = response['choices'][0]['message']['content'].strip()
                     st.write("Response from OpenAI:")
                     st.write(text)
