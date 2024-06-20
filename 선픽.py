@@ -293,7 +293,7 @@ def call_example(query):
     }
     return examples.get(query, {"team": [], "counter": []})
 
-api_key = st.text_input("Enter your OpenAI API key:", type="password")
+
 
 
 def get_openai_response(user_input):
@@ -340,7 +340,9 @@ with col2:
         st.write(clicked)
         # call openai
         result = call_example(clicked)
+        api_key = st.text_input("Enter your OpenAI API key:", type="password")
         openai.api_key = api_key
+        
         if st.button("상성과 조합 보기"):
             if not api_key:
                 st.error("Please enter your API key.")
