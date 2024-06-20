@@ -345,7 +345,7 @@ with col2:
             if not api_key:
                 st.error("Please enter your API key.")
             else:
-                response = openai.ChatCompletion.create(
+                response = openai.chat.completions.create(
                     model="gpt-4o",
                     messages=[
                         {"role": "system", "content": "You are a helpful assistant."},
