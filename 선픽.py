@@ -345,7 +345,7 @@ with col2:
             if not api_key:
                 st.error("Please enter your API key.")
             else:
-                response = openai.Completion.create(
+                response = openai.chat.completions.create(
                     engine="gpt-4o",
                     prompt=f"{result}의 counter의 목록들에게 왜 상성이 안좋은지, team의 목록들과 왜 조합이 잘 맞는지에 대해 설명해주세요",
                     max_tokens=300
