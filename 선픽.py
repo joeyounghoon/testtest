@@ -293,24 +293,6 @@ def call_example(query):
     }
     return examples.get(query, {"team": [], "counter": []})
 
-
-
-
-def get_openai_response(user_input):
-    try:
-        client = OpenAI(api_key=openai.api_key)
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": f"{user_input}의 상성과 조합에 관해 설명해 주세요."}
-            ]
-        )
-        return response['choices'][0]['message']['content'].strip()
-    except Exception as e:
-        return f"Error occurred: {e}"
-
-
 html_ad = ""
 for item in champions_ad:
     name=item["name"]
@@ -392,16 +374,35 @@ with col2:
         st.write(clicked)
         # call openai
         result = call_example(clicked)
-        #st.write(result)
+        api_key = st.text_input("Enter your OpenAI API key:", type="password")
+        openai.api_key = api_key
 
-        #서폿 조합 코드
-        #L_____
-        
-        st.subheader("Counter")
-        for item in result['counter']:
-            for i in champions_ad:
-                if i["name"] == item:
-                    st.image(i['image_url'])
-            for i in champions_sup:
-                if i["name"] == item:
-                    st.image(i['image_url'])
+        if st.button("상성과 조합 보기"):
+            if not api_key:
+                st.error("Please enter your API key.")
+            else:
+                response = openai.ChatCompletion.create(
+                    model="gpt-4o",  # Example model, replace with appropriate model
+                    messages=[
+                        {"role": "system", "content": "you are lol bot"},
+                        {"role": "user", "content": f"{result}의 카운터에 대해 설명해주세요."}
+                    ]
+                )
+                explanation = response['choices'][0]['message']['content'].strip()
+                st.write("### 챔피언 조합 설명")
+                st.write(explanation)
+                for item in result['team']:
+                    for i in champions_ad:
+                        if i["name"] == item:
+                            st.image(i['image_url'])
+                    for i in champions_sup:
+                        if i["name"] == item:
+                            st.image(i['image_url'])
+                st.subheader("Counter")
+                for item in result['counter']:
+                    for i in champions_ad:
+                        if i["name"] == item:
+                            st.image(i['image_url'])
+                    for i in champions_sup:
+                        if i["name"] == item:
+                            st.image(i['image_url'])
