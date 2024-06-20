@@ -302,7 +302,7 @@ def get_openai_response(user_input):
                 {"role": "user", "content": f"{user_input}의 상성과 조합에 관해 설명해 주세요."}
             ]
         )
-        return response
+        return response['choices'][0]['message']['content'].strip()
     except Exception as e:
         return f"Error occurred: {e}"
 
@@ -339,8 +339,9 @@ with col2:
         st.write(clicked)
         # call openai
         result = call_example(clicked)
-        text = get_openai_response(result)
-        st.write(text)
+        if st.button("응답 보기"):
+            text= response(result)
+            st.write(text)
         st.subheader("Team")
         for item in result['team']:
             for i in champions_ad:
