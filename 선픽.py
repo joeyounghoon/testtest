@@ -343,8 +343,6 @@ with col2:
         if st.button("Submit"):
             if not api_key:
                 st.error("Please enter your API key.")
-            elif not prompt:
-                st.error("Please enter a prompt.")
             else:
             # OpenAI API 키 설정
                 openai.api_key = api_key
@@ -355,7 +353,7 @@ with col2:
                         model="gpt-4o",
                         messages=[
                             {"role": "system", "content": "You are a helpful assistant."},
-                            {"role": "user", "content": f"{user_input}의 상성과 조합에 관해 설명해 주세요."}
+                            {"role": "user", "content": f"{result}의 상성과 조합에 관해 설명해 주세요."}
                         ]
                     )
                     text = response['choices'][0]['message']['content'].strip()
