@@ -1,7 +1,7 @@
 import streamlit as st
 from bs4 import BeautifulSoup
 import requests
-import opneai
+import openai
 from st_click_detector import click_detector
 from dotenv import load_dotenv
 import os
