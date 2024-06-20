@@ -340,16 +340,16 @@ with col2:
         st.write(clicked)
         # call openai
         result = call_example(clicked)
-        if st.button("Submit"):
+        openai.api_key = api_key
+        if st.button("상성과 조합 보기"):
             if not api_key:
                 st.error("Please enter your API key.")
             else:
             # OpenAI API 키 설정
-                openai.api_key = api_key
+                
                 try:
             # OpenAI API 호출
-                    client = OpenAI(api_key=openai.api_key)
-                    response = client.chat.completions.create(
+                    response = openai.ChatCompletion.create(
                         model="gpt-4o",
                         messages=[
                             {"role": "system", "content": "You are a helpful assistant."},
