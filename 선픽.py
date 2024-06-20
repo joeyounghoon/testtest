@@ -345,7 +345,7 @@ with col2:
             if not api_key:
                 st.error("Please enter your API key.")
             else:
-                 response = openai.ChatCompletion.create(
+                response = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",  # Example model, replace with appropriate model
                     messages=[
                         {"role": "system", "content": "you are lol bot"},
