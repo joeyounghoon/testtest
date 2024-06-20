@@ -360,7 +360,7 @@ with col2:
                     explanation = response['choices'][0]['message']['content'].strip()
                     st.write("### 챔피언 조합과 상성 설명")
                     st.write(explanation)
-                    except Exception as e:
+                except Exception as e:
                     st.write("오류가 발생했습니다: ", e)
         else:
             st.write("API 키를 입력하세요.")
