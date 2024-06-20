@@ -340,7 +340,7 @@ with col2:
         # call openai
         result = call_example(clicked)
         if st.button("응답 보기"):
-            text= response(result)
+            text = get_openai_response(result)
             st.write(text)
         st.subheader("Team")
         for item in result['team']:
@@ -378,7 +378,6 @@ with col2:
         # call openai
         result = call_example(clicked)
         #st.write(result)
-        get_openai_response(result, "api_key")
 
         #서폿 조합 코드
         #L_____
