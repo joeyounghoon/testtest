@@ -359,6 +359,21 @@ with col2:
                     text = response['choices'][0]['message']['content'].strip()
                     st.write("Response from OpenAI:")
                     st.write(text)
+                    for item in result['team']:
+                        for i in champions_ad:
+                            if i["name"] == item:
+                                st.image(i['image_url'])
+                        for i in champions_sup:
+                            if i["name"] == item:
+                                st.image(i['image_url'])
+                    st.subheader("Counter")
+                    for item in result['counter']:
+                        for i in champions_ad:
+                            if i["name"] == item:
+                                st.image(i['image_url'])
+                        for i in champions_sup:
+                            if i["name"] == item:
+                                st.image(i['image_url'])
                 except openai.error.AuthenticationError:
                     st.error("API key is incorrect. Please check your API key and try again.")
                 except Exception as e:
