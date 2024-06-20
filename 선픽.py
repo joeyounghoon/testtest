@@ -346,7 +346,7 @@ with col2:
         st.write(clicked)
         # call openai
         result = call_example(clicked)
-       if api_key:
+        if api_key:
             openai.api_key = api_key
             if st.button("응답 보기"):
                 try:
