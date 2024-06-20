@@ -345,16 +345,15 @@ with col2:
             if not api_key:
                 st.error("Please enter your API key.")
             else:
-                response = openai.chat.completions.create(
-                    model="gpt-4o",
-                    messages=[
-                        {"role": "system", "content": "You are a helpful assistant."},
-                        {"role": "user", "content": f"{result}의 상성과 조합에 관해 설명해 주세요."}
-                    ]
+                response = openai.Completion.create(
+                    engine="gpt-4o",
+                    prompt=f"{result}의 counter의 목록들에게 왜 상성이 안좋은지, team의 목록들과 왜 조합이 잘 맞는지에 대해 설명해주세요",
+                    max_tokens=300
                 )
-                text = response['choices'][0]['message']['content'].strip()
+                    
+                    # 결과 출력
                 st.write("Response from OpenAI:")
-                st.write(text)
+                st.write(response['choices'][0]['text'].strip())
                 for item in result['team']:
                     for i in champions_ad:
                         if i["name"] == item:
