@@ -294,8 +294,8 @@ def call_example(query):
     }
     return examples.get(query, {"team": [], "counter": []})
 
-api_key = st.text_input("Enter your OpenAI API key:", type="password")
-client=OpenAI()
+api-key = st.text_input("Enter your OpenAI API key:", type="password")
+client=OpenAI(api_key=api-key)
 
 def get_openai_response(user_input):
     try:
