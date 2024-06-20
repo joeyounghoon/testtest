@@ -1,7 +1,7 @@
 import streamlit as st
 from bs4 import BeautifulSoup
 import requests
-import openai
+from openai import OpenAI
 from st_click_detector import click_detector
 from dotenv import load_dotenv
 import os
@@ -295,6 +295,7 @@ def call_example(query):
     return examples.get(query, {"team": [], "counter": []})
 
 api_key = st.text_input("Enter your OpenAI API key:", type="password")
+client=OpenAI()
 
 def get_openai_response(user_input):
     try:
