@@ -294,8 +294,7 @@ def call_example(query):
     }
     return examples.get(query, {"team": [], "counter": []})
 
-load_dotenv()
-openai.api_key = os.getenv('OPENAI_API_KEY')
+api_key = st.text_input("Enter your OpenAI API key:", type="password")
 
 def get_openai_response(user_input):
     try:
@@ -341,9 +340,31 @@ with col2:
         st.write(clicked)
         # call openai
         result = call_example(clicked)
-        if st.button("응답 보기"):
-            text= get_openai_response(result)
-            st.write(text)
+       if st.button("Submit"):
+            if not api_key:
+                st.error("Please enter your API key.")
+            elif not prompt:
+                st.error("Please enter a prompt.")
+           else:
+            # OpenAI API 키 설정
+                openai.api_key = api_key
+                try:
+            # OpenAI API 호출
+                    client = OpenAI(api_key=openai.api_key)
+                    response = client.chat.completions.create(
+                        model="gpt-4o",
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant."},
+                            {"role": "user", "content": f"{user_input}의 상성과 조합에 관해 설명해 주세요."}
+                        ]
+                    text = response['choices'][0]['message']['content'].strip()
+                    st.write("Response from OpenAI:")
+                    st.write(text)
+                except openai.error.AuthenticationError:
+                    st.error("API key is incorrect. Please check your API key and try again.")
+                except Exception as e:
+                    st.error(f"An error occurred: {e}")
+
             
         for item in result['team']:
             for i in champions_ad:
