@@ -2,5 +2,4 @@ streamlit
 st-click-detector
 bs4
 requests
-python-dotenv
-openai
+openai=0.28.1
