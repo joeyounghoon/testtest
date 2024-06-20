@@ -3,4 +3,4 @@ st-click-detector
 bs4
 requests
 python-dotenv
-openai==0.28.1
+openai
