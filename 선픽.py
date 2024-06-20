@@ -292,11 +292,11 @@ def call_example(query):
     }
     return examples.get(query, {"team": [], "counter": []})
 
-def get_openai_response(user_input, api_key):
+def get_openai_response(user_input):
     try:
-        client = OpenAI(api_key="api_key")
+        client = OpenAI(api_key="sk-proj-ZzTSiwAYcRFIfdZLD59RT3BlbkFJ2dV4nxdqkHBF7yuRLmc1")
         response = client.chat.completions.create(
-            model="gpt-4-turbo-preview",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": f"{user_input}의 상성과 조합에 관해 설명해 주세요."}
@@ -339,7 +339,8 @@ with col2:
         st.write(clicked)
         # call openai
         result = call_example(clicked)
-        get_openai_response(result, "api_key")
+        text = get_openai_response(result)
+        st.write(text)
         st.subheader("Team")
         for item in result['team']:
             for i in champions_ad:
