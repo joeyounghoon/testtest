@@ -306,6 +306,13 @@ def get_openai_response(user_input):
     except Exception as e:
         return f"Error occurred: {e}"
 
+with main_col:
+    api_key = st.text_input("Enter your OpenAI API key:", type="password")
+    st.write("### 후픽 챔피언 조합")
+
+    if st.button("선택 초기화"):
+        selected_champions.clear()
+        st.session_state['selected_champions'] = selected_champions
 
 html_ad = ""
 for item in champions_ad:
@@ -339,10 +346,21 @@ with col2:
         st.write(clicked)
         # call openai
         result = call_example(clicked)
-        if st.button("응답 보기"):
-            text = get_openai_response(result)
-            st.write(text)
-        st.subheader("Team")
+       if api_key:
+            openai.api_key = api_key
+            if st.button("응답 보기"):
+                try:
+                    response = openai.ChatCompletion.create(
+                        model="gpt-4o",  # Example model, replace with appropriate model
+                        messages=[
+                            {"role": "system", "content": f"{result}의 조합과 상성에 대해 설명해주세요."},
+                            {"role": "user", "content": "설명 보기"}
+                        ]
+                    )
+                    explanation = response['choices'][0]['message']['content'].strip()
+                    st.write("### 챔피언 조합과 상성 설명")
+                    st.write(explanation)
+
         for item in result['team']:
             for i in champions_ad:
                 if i["name"] == item:
