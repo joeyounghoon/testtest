@@ -345,15 +345,16 @@ with col2:
             if not api_key:
                 st.error("Please enter your API key.")
             else:
-                response = openai.chat.completions.create(
-                    engine="gpt-4o",
-                    prompt=f"{result}의 counter의 목록들에게 왜 상성이 안좋은지, team의 목록들과 왜 조합이 잘 맞는지에 대해 설명해주세요",
-                    max_tokens=300
+                 response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",  # Example model, replace with appropriate model
+                    messages=[
+                        {"role": "system", "content": "you are lol bot"},
+                        {"role": "user", "content": f"{result}의 조합과 카운터에 대해 설명해주세요."}
+                    ]
                 )
-                    
-                    # 결과 출력
-                st.write("Response from OpenAI:")
-                st.write(response['choices'][0]['text'].strip())
+                explanation = response['choices'][0]['message']['content'].strip()
+                st.write("### 챔피언 조합 설명")
+                st.write(explanation)
                 for item in result['team']:
                     for i in champions_ad:
                         if i["name"] == item:
