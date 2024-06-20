@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import requests
 from openai import OpenAI
 from st_click_detector import click_detector
+from dotenv import load_dotenv
+import os
 
 # Streamlit 페이지 구성
 st.set_page_config(layout="wide")
@@ -292,9 +294,12 @@ def call_example(query):
     }
     return examples.get(query, {"team": [], "counter": []})
 
+load_dotenv()
+openai.api_key = os.getenv('OPENAI_API_KEY')
+
 def get_openai_response(user_input):
     try:
-        client = OpenAI(api_key="sk-proj-ZzTSiwAYcRFIfdZLD59RT3BlbkFJ2dV4nxdqkHBF7yuRLmc1")
+        client = OpenAI(api_key=openai.api_key)
         response = client.chat.completions.create(
             model="gpt-4o",
             messages=[
