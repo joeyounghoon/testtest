@@ -3,3 +3,4 @@ streamlit
 st-click-detector
 bs4
 requests
+python-dotenv
