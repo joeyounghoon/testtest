@@ -340,12 +340,12 @@ with col2:
         st.write(clicked)
         # call openai
         result = call_example(clicked)
-       if st.button("Submit"):
+        if st.button("Submit"):
             if not api_key:
                 st.error("Please enter your API key.")
             elif not prompt:
                 st.error("Please enter a prompt.")
-           else:
+            else:
             # OpenAI API 키 설정
                 openai.api_key = api_key
                 try:
