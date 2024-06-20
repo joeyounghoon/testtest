@@ -306,13 +306,6 @@ def get_openai_response(user_input):
     except Exception as e:
         return f"Error occurred: {e}"
 
-with main_col:
-    api_key = st.text_input("Enter your OpenAI API key:", type="password")
-    st.write("### 후픽 챔피언 조합")
-
-    if st.button("선택 초기화"):
-        selected_champions.clear()
-        st.session_state['selected_champions'] = selected_champions
 
 html_ad = ""
 for item in champions_ad:
@@ -326,8 +319,7 @@ for item in champions_sup:
     src = item["image_url"]
     html_sup += f"<a href='#' id='{name}'><img src='{src}'></a>"
     
-
-
+api_key = st.text_input("Enter your OpenAI API key:", type="password")
 
 # 중앙 정렬을 위한 컨테이너
 col1, col2 = st.columns([1, 5])
