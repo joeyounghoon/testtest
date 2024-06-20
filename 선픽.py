@@ -319,8 +319,6 @@ for item in champions_sup:
     src = item["image_url"]
     html_sup += f"<a href='#' id='{name}'><img src='{src}'></a>"
     
-api_key = st.text_input("Enter your OpenAI API key:", type="password")
-
 # 중앙 정렬을 위한 컨테이너
 col1, col2 = st.columns([1, 5])
 clicked=None
@@ -338,24 +336,9 @@ with col2:
         st.write(clicked)
         # call openai
         result = call_example(clicked)
-        if api_key:
-            openai.api_key = api_key
-            if st.button("응답 보기"):
-                try:
-                    response = openai.ChatCompletion.create(
-                        model="gpt-4o",  # Example model, replace with appropriate model
-                        messages=[
-                            {"role": "system", "content": f"{result}의 조합과 상성에 대해 설명해주세요."},
-                            {"role": "user", "content": "설명 보기"}
-                        ]
-                    )
-                    explanation = response['choices'][0]['message']['content'].strip()
-                    st.write("### 챔피언 조합과 상성 설명")
-                    st.write(explanation)
-                except Exception as e:
-                    st.write("오류가 발생했습니다: ", e)
-        else:
-            st.write("API 키를 입력하세요.")
+        if st.button("응답 보기"):
+            text= get_openai_response(result)
+            st.write(text)
             
         for item in result['team']:
             for i in champions_ad:
